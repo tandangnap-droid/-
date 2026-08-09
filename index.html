@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>♥глупый🌸</title>
+  
+  <!-- Font chữ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* Bảng màu Castorice */
+      --purple-main: #8a58a8;
+      --purple-dark: #120a1f;
+      --purple-light: #d8b4f8;
+      --accent-glow: #b28dff;
+      --sky-glow: #cce3ff;
+      
+      --bg-card: rgba(18, 10, 31, 0.85);
+      --text-primary: #f2e9fc;
+      --text-secondary: #af9ebe;
+      --border-glow: rgba(178, 141, 255, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--purple-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* --- MÀN HÌNH CHỜ (OVERLAY) CHỜ CHẠM --- */
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background-color: var(--purple-dark);
+      background-image: linear-gradient(to bottom, rgba(18, 10, 31, 0.2), rgba(18, 10, 31, 0.5)), url('overlay.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    #overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .overlay-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      color: var(--sky-glow);
+      text-shadow: 0 0 12px var(--accent-glow), 0 0 20px rgba(0, 0, 0, 0.9);
+      background: rgba(18, 10, 31, 0.7);
+      padding: 14px 32px;
+      border-radius: 30px;
+      border: 1px solid var(--border-glow);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      animation: pulse 1.6s infinite alternate ease-in-out;
+      user-select: none;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.75; transform: scale(0.96); }
+      100% { opacity: 1; transform: scale(1.04); }
+    }
+
+    /* --- NỀN TRANG CHÍNH --- */
+    .scene-photo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(to bottom, rgba(18, 10, 31, 0.4), rgba(18, 10, 31, 0.85)), url('backclassroom.jpg');
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+      filter: brightness(0.85);
+      opacity: 0;
+      transition: opacity 1s ease 0.2s;
+    }
+
+    /* --- THẺ HỒ SƠ --- */
+    .profile-card {
+      width: 100%;
+      max-width: 480px;
+      background: var(--bg-card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-glow);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6), 0 0 18px rgba(178, 141, 255, 0.25);
+      overflow: hidden;
+      margin: 20px;
+      position: relative;
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
+    }
+
+    body.is-entered .scene-photo {
+      opacity: 1;
+    }
+
+    body.is-entered .profile-card {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card-header {
+      height: 180px;
+      background-image: url('banner.jpg');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      border-bottom: 1px solid var(--border-glow);
+    }
+
+    .card-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60%;
+      background: linear-gradient(to top, var(--bg-card), transparent);
+    }
+
+    .music-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      z-index: 10;
+      background: rgba(18, 10, 31, 0.6);
+      border: 1px solid var(--border-glow);
+      color: var(--accent-glow);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .music-btn:hover {
+      background: var(--purple-main);
+      color: #fff;
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .card-body {
+      padding: 0 24px 24px 24px;
+      position: relative;
+      margin-top: -50px;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      display: inline-block;
+      z-index: 2;
+    }
+
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 2px solid var(--purple-light);
+      box-shadow: 0 0 14px var(--accent-glow);
+      object-fit: cover;
+      background: var(--purple-dark);
+    }
+
+    .user-titles {
+      margin-top: 12px;
+    }
+
+    .main-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: var(--sky-glow);
+      text-shadow: 0 0 10px rgba(178, 141, 255, 0.6);
+    }
+
+    .sub-title {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+    }
+
+    .info-section {
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+      color: var(--purple-light);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .quote-ru {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--accent-glow);
+      line-height: 1.5;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .detail-item {
+      background: rgba(0, 0, 0, 0.25);
+      padding: 10px 12px;
+      border-radius: 6px;
+      border-left: 2px solid var(--purple-main);
+    }
+
+    .detail-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-value {
+      font-size: 0.85rem;
+      color: var(--sky-glow);
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MÀN HÌNH CHỜ OVERLAY -->
+  <div id="overlay">
+    <div class="overlay-title">Chạm vào màn hình để vào trang</div>
+  </div>
+
+  <div class="scene-photo"></div>
+
+  <!-- THẺ HỒ SƠ -->
+  <div class="profile-card">
+    <div class="card-header">
+      <button class="music-btn" id="music-toggle" onclick="toggleAudio()" title="Музыка">🎵</button>
+    </div>
+
+    <audio id="bg-music" loop preload="auto">
+      <source src="epitaph.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="card-body">
+      <div class="avatar-wrapper">
+        <img src="avatar.jpg" alt="Avatar" class="avatar">
+      </div>
+
+      <div class="user-titles">
+        <h1 class="main-title">♥глупый🌸</h1>
+        <div class="sub-title">tz_016z</div>
+      </div>
+
+      <div class="info-section">
+        <span class="section-label">О СЕБЕ</span>
+        <div class="quote-ru">"Являясь воплощением смерти, но всей душой дорожа жизнью, она выбирает одиночество, чтобы подарить покой всему миру."</div>
+      </div>
+
+      <div class="details-grid">
+        <div class="detail-item">
+          <span class="detail-label">ТИТУЛ</span>
+          <div class="detail-value">Слуга Смерти</div>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">СТИХИЯ</span>
+          <div class="detail-value">Квантовая Стихия</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const audio = document.getElementById('bg-music');
+    const overlay = document.getElementById('overlay');
+
+    function handleEnter() {
+      document.body.classList.add('is-entered');
+      overlay.classList.add('hidden');
+
+      if (audio) {
+        audio.play().catch(err => {
+          console.log("Autoplay blocked:", err);
+        });
+      }
+
+      overlay.removeEventListener('click', handleEnter);
+      overlay.removeEventListener('touchstart', handleEnter);
+    }
+
+    overlay.addEventListener('click', handleEnter);
+    overlay.addEventListener('touchstart', handleEnter, { passive: true });
+
+    function toggleAudio() {
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+  </script>
+
+</body>
+</html>
